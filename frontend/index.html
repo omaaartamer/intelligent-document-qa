@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Q&A System</title>
+    
+    <!-- Robot Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iOCIgZmlsbD0idXJsKCNncmFkaWVudCkiLz4KPGRlZnM+CjxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZGllbnQiIHgxPSIwIiB5MT0iMCIgeDI9IjMyIiB5Mj0iMzIiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KPHN0b3Agc3RvcC1jb2xvcj0iIzY2N2VlYSIvPgo8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiM3NjRiYTIiLz4KPC9saW5lYXJHcmFkaWVudD4KPC9kZWZzPgo8IS0tIFJvYm90IEhlYWQgLS0+CjxyZWN0IHg9IjciIHk9IjgiIHdpZHRoPSIxOCIgaGVpZ2h0PSIxNCIgcng9IjMiIGZpbGw9IndoaXRlIiBvcGFjaXR5PSIwLjkiLz4KPCEtLSBFeWVzIC0tPgo8Y2lyY2xlIGN4PSIxMiIgY3k9IjE0IiByPSIyIiBmaWxsPSIjNGZhY2ZlIi8+CjxjaXJjbGUgY3g9IjIwIiBjeT0iMTQiIHI9IjIiIGZpbGw9IiM0ZmFjZmUiLz4KPCEtLSBNb3V0aCAtLT4KPHJlY3QgeD0iMTQiIHk9IjE4IiB3aWR0aD0iNCIgaGVpZ2h0PSIyIiByeD0iMSIgZmlsbD0iIzQzZTk3YiIvPgo8IS0tIEFudGVubmEgLS0+CjxjaXJjbGUgY3g9IjE2IiBjeT0iNSIgcj0iMS41IiBmaWxsPSIjZmY2YjZiIi8+CjxsaW5lIHgxPSIxNiIgeTE9IjUiIHgyPSIxNiIgeTI9IjgiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMSIgb3BhY2l0eT0iMC44Ii8+Cjwvc3ZnPgo=">
+    
+    <!-- Fallback for older browsers -->
+    <link rel="alternate icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAbFJREFUWEfNl4tNAzEQRMcJQAeQDqADSAdABUAFQAVABZAOSAdAB0AHQAdAB5AOgA6ADjBPGo38dWzf5a7S6iTaz/DezOysLf4VYoVrrPEOrHEOrHEOLDgHZvYA4A7ACwAnAJ4BXAOAz+l3Evk6gEsAhwC8fjXa6xeAXQBfJR9BAGbmA3sP4DgneJkA/rceAL5LIYIAZvYGYBfAaUUgjL9LPhcBtADM7B3ALoDLijgR+CwBGASQD9IeAL4H8KcUE4DvDLj/FICXhRIiGJcA1D5RAfh7AJ4m+GgaAGZm/oBPAA4BfPYM0AQAf6I2gNbq2Pt/ALsBKP8HQL0BrDgHZrYF4K7QfqP7LwD4Hcp7rNWx9/8ACBZ6BVDQAqt9ogLw9wA8TQDY8aKM31V8tI1T/FEC8LcAvgHsBaH8H0B0yGcV0NvqiBJfcQLw9wA8D0DJI4BSEOhxhxJA73EfJfxZFcDfA/A8ACWPAEpBYGzFJoA6XM8TNZGJ1A9CeKrUO0CzzxRAmhSAv6edm1cCUPII4B3AcxIgykOoFjgpAOX/ACjZBFAyKwA/VwCR8jkJ4OcVgJ9VAdE8D4C/K0Dp1Sb/AWitE/2LBaU1AAAAAElFTkSuQmCC">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --warning-gradient: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            --dark-gradient: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            
+            --bg-primary: #0f0f23;
+            --bg-secondary: #1a1a2e;
+            --bg-card: #16213e;
+            --text-primary: #ffffff;
+            --text-secondary: #b8bcc8;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --shadow-primary: 0 8px 32px rgba(0, 0, 0, 0.3);
+            --shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.4);
+            
+            --border-radius: 16px;
+            --border-radius-small: 8px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 219, 226, 0.2) 0%, transparent 50%);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .title {
+            font-size: 3rem;
+            font-weight: 700;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .title i {
+            background: var(--success-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: pulse 2s infinite;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            font-weight: 400;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-small);
+            backdrop-filter: blur(10px);
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            transition: var(--transition);
+        }
+
+        .stat-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-primary);
+        }
+
+        .stat-item i {
+            color: #4facfe;
+            font-size: 1rem;
+        }
+
+        .chat-container {
+            flex: 1;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow-primary);
+            margin-bottom: 2rem;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 500px;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        .chat-header {
+            padding: 1.5rem;
+            background: var(--primary-gradient);
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-weight: 600;
+        }
+
+        .chat-header i {
+            font-size: 1.2rem;
+            animation: bounce 2s infinite;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+
+        .message {
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: slideInUp 0.5s ease-out forwards;
+        }
+
+        .message-content {
+            max-width: 85%;
+            padding: 1rem 1.5rem;
+            border-radius: var(--border-radius);
+            position: relative;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-message {
+            text-align: right;
+        }
+
+        .user-message .message-content {
+            background: var(--secondary-gradient);
+            color: white;
+            margin-left: auto;
+            border-bottom-right-radius: 6px;
+        }
+
+        .ai-message .message-content {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            border-bottom-left-radius: 6px;
+        }
+
+        .message-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .message-header i {
+            font-size: 1rem;
+        }
+
+        .user-message .message-header {
+            justify-content: flex-end;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .ai-message .message-header {
+            color: #4facfe;
+        }
+
+        .sources {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .sources strong {
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .source-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0.25rem 0;
+            padding: 0.25rem 0;
+        }
+
+        .source-item i {
+            color: #43e97b;
+            font-size: 0.8rem;
+        }
+
+        .loading {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .loading::after {
+            content: '';
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top: 2px solid #4facfe;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .input-container {
+            display: flex;
+            gap: 1rem;
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow-primary);
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+            flex-wrap: wrap;
+        }
+
+        .input-group {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-small);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: var(--transition);
+            outline: none;
+        }
+
+        .input-field::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .input-field:focus {
+            border-color: #4facfe;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-size: 1rem;
+            pointer-events: none;
+        }
+
+        .filter-select {
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-small);
+            color: var(--text-primary);
+            font-size: 1rem;
+            min-width: 140px;
+            cursor: pointer;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .filter-select:focus {
+            border-color: #4facfe;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+        }
+
+        .filter-select option {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .ask-button {
+            padding: 1rem 2rem;
+            background: var(--success-gradient);
+            border: none;
+            border-radius: var(--border-radius-small);
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            min-width: 120px;
+            justify-content: center;
+        }
+
+        .ask-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .ask-button:active {
+            transform: translateY(0);
+        }
+
+        .ask-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .title {
+                font-size: 2rem;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .stats-bar {
+                gap: 1rem;
+            }
+
+            .stat-item {
+                padding: 0.5rem 1rem;
+                font-size: 0.8rem;
+            }
+
+            .input-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .input-group {
+                min-width: unset;
+            }
+
+            .message-content {
+                max-width: 95%;
+            }
+
+            .chat-messages {
+                padding: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .title {
+                font-size: 1.5rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            .stats-bar {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+            }
+        }
+
+        /* Custom scrollbar for webkit browsers */
+        .chat-messages {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(79, 172, 254, 0.3) transparent;
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: rgba(79, 172, 254, 0.3);
+            border-radius: 4px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb:hover {
+            background: rgba(79, 172, 254, 0.5);
+        }
+
+        /* Focus indicators for accessibility */
+        .ask-button:focus,
+        .input-field:focus,
+        .filter-select:focus {
+            outline: 2px solid #4facfe;
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">
+                <i class="fas fa-brain"></i>
+                AI Document Q&A System
+            </h1>
+            <p class="subtitle">
+                Intelligent research assistant powered by advanced RAG technology. 
+                Ask questions about political communication and social media research.
+            </p>
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <i class="fas fa-file-pdf"></i>
+                    <span id="doc-count-span">... Documents</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span id="year-range-span">...</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-search"></i>
+                    <span>Smart Search</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-filter"></i>
+                    <span>Year Filtering</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="chat-container">
+            <div class="chat-header">
+                <i class="fas fa-robot"></i>
+                <span>AI Research Assistant</span>
+            </div>
+            <div class="chat-messages" id="chatContainer">
+                <div class="message ai-message">
+                    <div class="message-content">
+                        <div class="message-header">
+                            <i class="fas fa-robot"></i>
+                            <span>AI Assistant</span>
+                        </div>
+                        <div class="message-text">
+                            Welcome! I'm your intelligent research assistant. I can help you explore 24 research documents about political communication on social media. 
+                            <br><br>
+                            <strong>What I can do:</strong>
+                            <br>• Answer complex research questions
+                            <br>• Find specific information across documents
+                            <br>• Filter results by publication year
+                            <br>• Provide source citations
+                            <br><br>
+                            What would you like to discover today?
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <div class="input-container">
+            <div class="input-group">
+                <i class="fas fa-comment-dots input-icon"></i>
+                <input 
+                    type="text" 
+                    id="questionInput" 
+                    class="input-field"
+                    placeholder="Ask me anything!"
+                    onkeypress="handleKeyPress(event)"
+                    autocomplete="off"
+                >
+            </div>
+            <select id="yearFilter" class="filter-select" title="Filter by publication year">
+                <option value="">All Years</option>
+            </select>
+            <button class="ask-button" onclick="askQuestion()" id="askBtn">
+                <i class="fas fa-paper-plane"></i>
+                <span>Ask</span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let messageCount = 0;
+
+        async function askQuestion() {
+            const question = document.getElementById('questionInput').value.trim();
+            const year = document.getElementById('yearFilter').value;
+            const askBtn = document.getElementById('askBtn');
+            
+            if (!question) {
+                showNotification('Please enter a question', 'warning');
+                return;
+            }
+            
+            // Disable button and show loading state
+            askBtn.disabled = true;
+            askBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Thinking...</span>';
+            
+            // Add user message to chat
+            addMessage(question, 'user');
+            document.getElementById('questionInput').value = '';
+            
+            // Show loading message
+            const loadingDiv = addMessage('Analyzing documents and generating response...', 'ai', true);
+            
+            try {
+                const payload = { question: question };
+                if (year) payload.year = parseInt(year);
+                
+                const response = await fetch('/ask', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                // Remove loading message
+                loadingDiv.remove();
+                
+                // Add AI response with sources
+                let sourceText = '';
+                if (data.sources && data.sources.length > 0) {
+                    sourceText = `<div class="sources">
+                        <strong><i class="fas fa-books"></i> Sources Referenced:</strong>`;
+                    data.sources.forEach(source => {
+                        sourceText += `<div class="source-item">
+                            <i class="fas fa-file-pdf"></i>
+                            <span>${source.filename} (${source.year})</span>
+                        </div>`;
+                    });
+                    sourceText += '</div>';
+                }
+                
+                addMessage(data.answer + sourceText, 'ai');
+                
+                showNotification('Response generated successfully!', 'success');
+                
+            } catch (error) {
+                console.error('Error:', error);
+                loadingDiv.remove();
+                addMessage('I apologize, but I encountered an error while processing your question. Please try again or rephrase your question.', 'ai');
+                showNotification('Error processing your question. Please try again.', 'error');
+            } finally {
+                // Re-enable button
+                askBtn.disabled = false;
+                askBtn.innerHTML = '<i class="fas fa-paper-plane"></i><span>Ask</span>';
+            }
+        }
+        
+        function addMessage(text, sender, isLoading = false) {
+            const chatContainer = document.getElementById('chatContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}-message`;
+            
+            const senderIcon = sender === 'user' ? 'fas fa-user' : 'fas fa-robot';
+            const senderLabel = sender === 'user' ? 'You' : 'AI Assistant';
+            
+            let messageContent = `
+                <div class="message-content">
+                    <div class="message-header">
+                        <i class="${senderIcon}"></i>
+                        <span>${senderLabel}</span>
+                    </div>
+                    <div class="message-text ${isLoading ? 'loading' : ''}">${text}</div>
+                </div>
+            `;
+            
+            messageDiv.innerHTML = messageContent;
+            
+            // Add animation delay based on message count
+            messageDiv.style.animationDelay = `${messageCount * 0.1}s`;
+            messageCount++;
+            
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+            
+            return messageDiv;
+        }
+        
+        function handleKeyPress(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                askQuestion();
+            }
+        }
+        
+        async function loadAvailableYears() {
+            try {
+                const response = await fetch('/years');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch years');
+                }
+                const data = await response.json();
+                const yearFilter = document.getElementById('yearFilter');
+                
+                if (data.available_years && data.available_years.length > 0) {
+                    data.available_years.forEach(year => {
+                        const option = document.createElement('option');
+                        option.value = year;
+                        option.textContent = year;
+                        yearFilter.appendChild(option);
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading available years:', error);
+            }
+        }
+        
+        async function loadStats() {
+            try {
+                const response = await fetch('/stats');
+                if (!response.ok) return;
+                const data = await response.json();
+                
+                document.getElementById('doc-count-span').textContent = `${data.doc_count} Documents`;
+                document.getElementById('year-range-span').textContent = `${data.min_year}–${data.max_year}`;
+            
+            } catch (error) {
+                console.error('Error loading stats:', error);
+                document.getElementById('doc-count-span').textContent = 'N/A Documents';
+                document.getElementById('year-range-span').textContent = 'N/A';
+            }
+        }
+        
+        function showNotification(message, type = 'info') {
+            // Simple notification system - you could enhance this further
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 1rem 1.5rem;
+                border-radius: 8px;
+                color: white;
+                font-weight: 500;
+                z-index: 1000;
+                animation: slideInRight 0.3s ease-out;
+            `;
+            
+            const colors = {
+                success: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+                warning: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                error: 'linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%)',
+                info: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)'
+            };
+            
+            notification.style.background = colors[type] || colors.info;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.3s ease-out forwards';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+        
+        // Add some CSS for notifications
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInRight {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOutRight {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Auto-focus on input field when page loads
+        window.addEventListener('load', () => {
+            document.getElementById('questionInput').focus();
+            loadAvailableYears();
+            loadStats();
+        });
+
+        // Add keyboard shortcuts
+        document.addEventListener('keydown', (event) => {
+            // Ctrl/Cmd + / to focus input
+            if ((event.ctrlKey || event.metaKey) && event.key === '/') {
+                event.preventDefault();
+                document.getElementById('questionInput').focus();
+            }
+        });
+    </script>
+</body>
+</html>

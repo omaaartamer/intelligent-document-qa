@@ -1,1 +1,10 @@
-omar
+omar/
+.env
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+chroma_db/
+docs/*.pdf
+omar2/
