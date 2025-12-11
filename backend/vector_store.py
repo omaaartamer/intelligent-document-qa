@@ -28,7 +28,7 @@ class VectorStore:
         try:
             results = self.vectorstore.get(limit=1)
             return len(results['ids']) > 0
-        except:
+        except Exception:
             return False
 
     def clear_documents(self):
