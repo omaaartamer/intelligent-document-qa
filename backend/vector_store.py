@@ -133,4 +133,3 @@ class VectorStore:
         except Exception as e:
             print(f"Error getting stats: {e}")
             return {"doc_count": 0, "min_year": "N/A", "max_year": "N/A"}
-    
